@@ -25,30 +25,54 @@ class Describer:
         Describer.periodogram(df)
 
     @staticmethod
-    def scatter(df: pd.DataFrame):
+    def scatter(df: pd.DataFrame, path: str = None):
         """
         Draw a scatter plot of each DataFrame's columns
 
         :param df: pd.DataFrame holding the time series values
+        :param path: path to save plots
         """
 
         for column in df.columns:
             sns.scatterplot(x=df.index, y=df[column])
+            if path:
+                plt.savefig(f'{path}_scatter.png')
             plt.show()
 
         print(f"\n\033[4mStats {'': <50}\033[0m")
         print(df.describe())
 
     @staticmethod
-    def hist(df: pd.DataFrame):
+    def hist(df: pd.DataFrame, path: str = None):
         """
         Draw histogram of each DataFrame's columns and aggregate skewness values
 
         :param df: pd.DataFrame holding the time series values
+        :param path: path to save plots
         """
 
         for column in df.columns:
-            sns.histplot(df[column], kde=True, bins=50)
+            sns.histplot(df[column], kde=True, bins=50).set_title('Histogram')
+            if path:
+                plt.savefig(f'{path}_hist.png')
+            plt.show()
+
+        print(f"\n\033[4mSkewness {'': <50}\033[0m")
+        print(df.agg(['skew']).transpose()['skew'])
+
+    @staticmethod
+    def boxplot(df: pd.DataFrame, path: str = None):
+        """
+        Draw histogram of each DataFrame's columns and aggregate skewness values
+
+        :param df: pd.DataFrame holding the time series values
+        :param path: path to save plots
+        """
+
+        for column in df.columns:
+            sns.boxplot(y=df[column]).set_title('Boxplot')
+            if path:
+                plt.savefig(f'{path}_boxplot.png')
             plt.show()
 
         print(f"\n\033[4mSkewness {'': <50}\033[0m")

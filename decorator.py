@@ -12,7 +12,6 @@ from describer import Describer
 from utils import symmetric_mean_absolute_percentage_error, plot_go, max_absolute_error
 
 
-# noinspection DuplicatedCode
 class Decorator:
     def __init__(self, weekends: pd.DataFrame):
         """
@@ -70,9 +69,10 @@ class Decorator:
             'prediction': prediction
         }).fillna(0)
         result['diff'] = result['actual'] - result['prediction']
-        Describer.qqplot(result['diff'])
-        Describer.hist(result['diff'])
-        Describer.scatter(result['diff'])
+
+        Describer.hist(result[['diff']], path=f'{plot_path}{plot_name}')
+        Describer.boxplot(result[['diff']], path=f'{plot_path}{plot_name}')
+        Describer.scatter(result[['diff']], path=f'{plot_path}{plot_name}')
 
         metrics = {
             'MAE': mean_absolute_error(result['actual'].values, result['prediction'].values),
@@ -82,7 +82,7 @@ class Decorator:
         }
         stats = {
             'min_fc': np.min(result['prediction']),
-            'max_fc': np.min(result['prediction']),
+            'max_fc': np.max(result['prediction']),
             'mean_fc': np.mean(result['prediction']),
             'std_fc': np.std(result['prediction'], ddof=1),
             'sum_fc': np.sum(result['prediction']),
@@ -99,7 +99,7 @@ class Decorator:
                         [result['actual'].index, result['diff'], 'Diff']],
                 title=f'{plot_name} Test Prediction. Mean diff: {result["diff"].mean()}',
                 errors=[round(metrics['MAE'], 3), round(metrics['MAPE'], 3), round(metrics['SMAPE'], 3)],
-                save_path=f'{plot_path}{plot_name}_pred.png', silent=silent)
+                save_path=f'{plot_path}{plot_name}.png', silent=silent)
         if result_path:
             result.to_csv(result_path)
         if csv_path:

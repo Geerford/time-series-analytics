@@ -102,11 +102,11 @@ class CatboostModel(Creator):
         X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=test_size, shuffle=False)
 
         # best = {
-        #     'learning_rate': 0.006733797014476355,
-        #     'n_estimators': 800,
-        #     'subsample': 0.8015834750222917
+        #     'learning_rate': 0.02,
+        #     'n_estimators': 600,
+        #     'subsample': 0.95
         # }
-        # cv_score = 0.29972607624330416
+        # cv_score = None
         best, trials = CatboostModel.optimize(X_train, y_train, max_evals=max_evals, verbose=True)
         model = CatboostModel.train(best, X_train, y_train)["model"]
         cv_score = min([f["loss"] for f in trials.results if f["status"] == STATUS_OK])
