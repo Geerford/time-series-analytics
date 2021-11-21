@@ -276,6 +276,24 @@ class Decorator:
             _features = self.generate_lag_features(df=_features, n_lags=n_lags, threshold=threshold)
             _features = self.generate_calendar_features(df=_features)
 
+            # ##########################################################################################################
+            # NUM WORKDAY IN MONTH
+            # count = _features.groupby(pd.Grouper(freq='M')).sum().shape[0]
+            # start_date, end_date = pd.Timestamp('2015-01-10').date(), pd.Timestamp('2015-02-10').date()
+            # num_workday = pd.Series(name='num_workday')
+            # while count > 0:
+            #     num_workday_month_i = pd.Series(_features.loc[_features['is_weekend'] == 0].loc[
+            #                                     start_date + pd.Timedelta(days=1):end_date].reset_index().index + 1,
+            #                                     index=_features.loc[_features['is_weekend'] == 0].loc[
+            #                                     start_date + pd.Timedelta(days=1):end_date].index)
+            #     num_workday = pd.concat([num_workday, num_workday_month_i.rename('num_workday')], axis=0)
+            #     start_date = end_date
+            #     end_date = (start_date + pd.DateOffset(months=1)).date()
+            #     count -= 1
+            # _features = pd.concat([_features, num_workday], axis=1).fillna(0)
+            # _features['num_workday'] = _features['num_workday'].astype(int)
+            # ##########################################################################################################
+
             _target = pd.DataFrame(_features.loc[:, 't'].copy())
             _features.drop(['t'], axis=1, inplace=True)
 

@@ -9,20 +9,22 @@ from scipy.signal import periodogram
 
 class Describer:
     @staticmethod
-    def describe(df: pd.DataFrame):
+    def describe(df: pd.DataFrame, period: str = 'daily'):
         """
         Perform all the methods that described below
 
         :param df: pd.DataFrame holding the time series values
+        :param period: type of time series frequency
         """
 
         Describer.hist(df)
         Describer.scatter(df)
         Describer.qqplot(df)
-        Describer.decompose(df)
         Describer.dickey_fuller_test(df)
-        Describer.resample_plot(df)
-        Describer.periodogram(df)
+        if period == 'daily':
+            Describer.decompose(df)
+            Describer.resample_plot(df)
+            Describer.periodogram(df)
 
     @staticmethod
     def scatter(df: pd.DataFrame, path: str = None):
@@ -115,7 +117,7 @@ class Describer:
             plt.show()
 
     @staticmethod
-    def dickey_fuller_test(df: pd.DataFrame, lags: int = 90):
+    def dickey_fuller_test(df: pd.DataFrame, lags: int = 10):
         """
         Draw augmented Dickey-Fuller test with acf and pacf of each DataFrame's columns
 

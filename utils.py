@@ -15,7 +15,7 @@ def symmetric_mean_absolute_percentage_error(y_true: np.array, y_pred: np.array)
 
     div = np.abs(y_pred - y_true) / (np.abs(y_pred) + np.abs(y_true))
     div[np.isnan(div)] = 0
-    return np.sum(div) / len(y_true) * 100
+    return np.sum(div) / len(y_true)
 
 
 def plot_go(traces: list, title: str, silent: bool, errors: list = None, save_path: str = None):
