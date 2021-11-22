@@ -36,7 +36,7 @@ def predict_cvr_threshold(state: str, model_name: str, model_ver: str, data_from
     scrParams = {
         'model_ver': model_ver + str(num_exp),
         'path_data': 'data/',
-        'path_exp': f'experiments/exp/cvr/exp_{num_exp}/',
+        'path_exp': f'experiments/exp/cvr/{model_ver}{num_exp}/',
         'csv_name': 'cvr.csv',
         'cvr_codes_21': 'cvr_codes_21.csv',
         'weekends_path': 'data/weekends.csv',
@@ -125,7 +125,7 @@ def predict_cvr(state: str, model_name: str, model_ver: str, data_from: str, num
     scrParams = {
         'model_ver': model_ver + str(num_exp),
         'path_data': 'data/',
-        'path_exp': f'experiments/exp/cvr/exp_{num_exp}/',
+        'path_exp': f'experiments/exp/cvr/{model_ver}{num_exp}/',
         'csv_name': 'cvr.csv',
         'cvr_codes_21': 'cvr_codes_21.csv',
         'weekends_path': 'data/weekends.csv',

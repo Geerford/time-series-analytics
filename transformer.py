@@ -6,6 +6,14 @@ from sklearn.preprocessing import StandardScaler
 
 class Transformer:
     def __init__(self, log=False, detrend=False, diff=False, scale=False):
+        """
+        Constructor for the Transformer object
+
+        :param log: Data transfromation method, which it replaces each variable x with a log(x)
+        :param detrend: Data transfromation method, which it removes linear trend along time series
+        :param diff: Data transfromation method, which it replaces each variable x(t) with a x(t) - x(t-1)
+        :param scale: StandardScaler method
+        """
         self.log = log
         self.log_max = None
         self.detrend = detrend
@@ -15,6 +23,12 @@ class Transformer:
         self.scaler = StandardScaler() if self.scale else None
 
     def transform(self, y: pd.DataFrame) -> pd.DataFrame:
+        """
+        Transform target
+
+        :param y: pd.DataFrame holding the input time-series target
+        :return: transformed pd.DataFrame holding the input time-series target
+        """
         if self.diff:
             y = y.groupby(pd.Grouper(freq='Y')).diff().fillna(0)
         if self.detrend:
@@ -29,6 +43,12 @@ class Transformer:
         return y
 
     def inverse(self, y: pd.DataFrame) -> pd.DataFrame:
+        """
+        Inverse target
+
+        :param y: pd.DataFrame holding the input time-series target
+        :return: inversed pd.DataFrame holding the input time-series target
+        """
         if self.scale:
             y = pd.DataFrame(self.scaler.inverse_transform(y), index=y.index, columns=y.columns)
         if self.log:

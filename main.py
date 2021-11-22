@@ -62,11 +62,6 @@ def read_args() -> argparse.Namespace:
                         default=0,
                         help="The number of experiment")
 
-    parser.add_argument("-rs", "--random_seed",
-                        type=int,
-                        default=21,
-                        help="The number of random seed")
-
     params = parser.parse_args()
     assert params.script_name in dir(scripts), 'Unknown function name, check in scripts module'
 
@@ -83,7 +78,7 @@ def configure_run(seed: int):
 
 if __name__ in '__main__':
     args = read_args()
-    configure_run(seed=args.random_seed)
+    configure_run(seed=21)
 
     result = getattr(scripts, args.script_name)(args.state, args.model, args.version, args.data, args.experiment,
                                                 args.horizon, args.seasonal_decompose)
