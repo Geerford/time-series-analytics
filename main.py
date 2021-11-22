@@ -19,9 +19,8 @@ def read_args() -> argparse.Namespace:
 
     parser.add_argument("-sn", "--script_name",
                         type=str,
-                        default="predict_cvr_daily",
-                        choices=["predict_cvr_daily", "predict_cvr_monthly", "predict_cvr_daily_anomaly",
-                                 "predict_trend_with_seasonal"],
+                        default="predict_cvr",
+                        choices=["predict_cvr", "predict_cvr_threshold"],
                         help="The name of script")
 
     parser.add_argument("-m", "--model",
@@ -40,16 +39,33 @@ def read_args() -> argparse.Namespace:
                         choices=["csv", "sql"],
                         help="The type of data load")
 
-    parser.add_argument("-f", "--force",
+    # parser.add_argument("-f", "--force",
+    #                     type=bool,
+    #                     default=True,
+    #                     choices=[True, False],
+    #                     help="The force saving to database")
+
+    parser.add_argument("-hf", "--horizon",
+                        type=str,
+                        default="daily",
+                        choices=["daily", "monthly"],
+                        help="The horizon of forecasting")
+
+    parser.add_argument("-sd", "--seasonal_decompose",
                         type=bool,
-                        default=True,
+                        default=False,
                         choices=[True, False],
-                        help="The force saving to database")
+                        help="The seasonal decomposition of time series")
 
     parser.add_argument("-e", "--experiment",
                         type=int,
                         default=0,
                         help="The number of experiment")
+
+    parser.add_argument("-rs", "--random_seed",
+                        type=int,
+                        default=21,
+                        help="The number of random seed")
 
     params = parser.parse_args()
     assert params.script_name in dir(scripts), 'Unknown function name, check in scripts module'
@@ -67,8 +83,8 @@ def configure_run(seed: int):
 
 if __name__ in '__main__':
     args = read_args()
-    configure_run(seed=21)
+    configure_run(seed=args.random_seed)
 
-    result = getattr(scripts, args.script_name)(args.state, args.model, args.version, args.data, args.force,
-                                                args.experiment)
+    result = getattr(scripts, args.script_name)(args.state, args.model, args.version, args.data, args.experiment,
+                                                args.horizon, args.seasonal_decompose)
     sys.exit()

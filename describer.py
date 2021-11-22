@@ -9,19 +9,19 @@ from scipy.signal import periodogram
 
 class Describer:
     @staticmethod
-    def describe(df: pd.DataFrame, period: str = 'daily'):
+    def describe(df: pd.DataFrame, freq: str = 'daily'):
         """
         Perform all the methods that described below
 
         :param df: pd.DataFrame holding the time series values
-        :param period: type of time series frequency
+        :param freq: type of time series frequency
         """
 
         Describer.hist(df)
         Describer.scatter(df)
         Describer.qqplot(df)
         Describer.dickey_fuller_test(df)
-        if period == 'daily':
+        if freq == 'daily':
             Describer.decompose(df)
             Describer.resample_plot(df)
             Describer.periodogram(df)

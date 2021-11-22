@@ -25,7 +25,6 @@ class Model:
         :param model_type: Name of model
         """
 
-        self.seed = params['seed']
         self.params = params
         self.plan = plan
         self.weekends = weekends
@@ -35,7 +34,7 @@ class Model:
         self.transformer = Transformer(scale=True, diff=False, log=False, detrend=False)
         self.target = self.transformer.transform(df[['first_difference']])
 
-        Describer.describe(self.target, period=self.params['period'])
+        Describer.describe(self.target, freq=self.params['freq'])
 
     @staticmethod
     def model_switcher(model_type: str = "catboost"):

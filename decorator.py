@@ -59,7 +59,7 @@ class Decorator:
         :param plot_path: str of path for saving plots
         :param csv_path: str of path for saving metrics
         :param result_path: str of path for saving actual, prediction and residuals values
-        :return:
+        :return: dict of metrics
         """
         assert isinstance(actual, np.ndarray), f'[TypeError] Actual must be in {np.ndarray} class'
         assert isinstance(prediction, np.ndarray), f'[TypeError] Prediction must be in {np.ndarray} class'
