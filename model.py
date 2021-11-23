@@ -63,10 +63,22 @@ class Model:
         period = f'{start_date}_{end_date}'
         print(f"[INFO] ID: {self.params['id']} forecast {period}")
 
-        # Choose {num_prediction} time periods as forecasting horizon
-        features, target = self.decorator.generate_features(df=self.target.loc[:end_date],
-                                                            n_lags=num_prediction)
+        if self.params['freq'] == 'monthly':
+            if self.model_type == 'sarimax':
+                y_train_i = self.target.loc[:start_date - pd.Timedelta(days=1)].to_period('M')
+                y_test_i = self.target.loc[start_date:end_date - pd.Timedelta(days=1)]
+                model_i, cv_score, test_score = Model.model_switcher(self.model_type).run(y_train_i, max_evals=1)
+                y_fc_i = pd.DataFrame(model_i.forecast(steps=num_prediction), columns=['t'])
+                y_test_i = self.transformer.inverse(y_test_i)
+                y_fc_i = self.transformer.inverse(y_fc_i)
+                pd.DataFrame({
+                    "actual": y_test_i,
+                    "y_fc_i": y_fc_i
+                }).to_csv("monthly_sarimax.csv")
+                return
 
+        # Choose {num_prediction} time periods as forecasting horizon
+        features, target = self.decorator.generate_features(df=self.target.loc[:end_date], n_lags=num_prediction)
         X_train_i, y_train_i = features.loc[:start_date], target.loc[:start_date]
         X_test_i = features.loc[start_date + pd.Timedelta(days=1):end_date]
         y_test_i = target.loc[start_date + pd.Timedelta(days=1):end_date]

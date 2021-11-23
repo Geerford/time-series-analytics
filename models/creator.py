@@ -33,7 +33,7 @@ class Creator(ABC):
         :param features: pd.DataFrame holding the training features
         :param target: pd.Series holding the training target
         :param fit_parameters: dict with parameters to pass to the model fit function
-        :return: Dictionary holding the resulting model, RMSE and final status of the training
+        :return: Dictionary holding the resulting model, MAE and final status of the training
         as required by hyperopt interface
         """
 
@@ -59,7 +59,7 @@ class Creator(ABC):
     @staticmethod
     def test_model(model, features: pd.DataFrame, target: pd.Series) -> dict:
         """
-        Get the RMSE for a given model on a test dataset
+        Get the MAE for a given model on a test dataset
 
         :param model: a model implementing the standard scikit-learn interface
         :param features: pd.DataFrame holding the features of the test set
